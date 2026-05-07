@@ -7,10 +7,7 @@
 | 产物类型 | 输出路径 | 说明 |
 |---------|---------|------|
 | 视觉规范 | `src/themes/visual-spec.md` | 项目统一视觉规范，被所有原型引用 |
-| 示例数据 | `src/data/<name>.md` | 每个数据对象一个文件 |
-| 页面地图 | `src/docs/page-map.md` | 来自 Axure 原型 |
-| 项目概览 | `src/docs/project-overview.md` | 来自 Axure 原型 |
-| 参考截图 | `src/docs/assets/ref-<name>.png` | 来自网页或 Axure 截图 |
+| 示例数据 | `src/data/<name>.md` | 每个数据对象一个文件，原型创建时按需复用 |
 
 ## 📄 视觉规范格式（`src/themes/visual-spec.md`）
 

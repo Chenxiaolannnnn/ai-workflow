@@ -17,11 +17,9 @@
 ```text
 收到参考网址：[URL]
 
-我可以从这个页面提取以下内容：
-1. 视觉规范（配色、字体、间距、圆角、阴影、交互风格）→ 写入 src/themes/visual-spec.md
-2. 页面结构截图（作为设计参考存档）→ 写入 src/docs/assets/
+我会从这个页面提取视觉规范（配色、字体、间距、圆角、阴影、交互风格）写入 src/themes/visual-spec.md。
 
-默认只提取视觉规范，如需截图存档请告知。
+确认即开始。
 ```
 
 ### 步骤 2：提取页面数据
@@ -29,17 +27,13 @@
 运行提取脚本获取设计令牌与截图：
 
 ```bash
-# 提取设计令牌 + 截图
+# 提取设计令牌 + 截图（截图用于视觉分析，不落盘）
 node extract-workflow/scripts/web-extract.mjs <URL> --theme --screenshot --scroll
-
-# 如需提取页面内容（用于了解信息结构）
-node extract-workflow/scripts/web-extract.mjs <URL> --all --scroll --viewport 1440x900
 ```
 
 产出：
 - `theme.json` — CSS 设计令牌（配色、字体、间距、圆角、阴影、动画）
-- `screenshot.png` — 页面截图
-- `content.md` — 页面文本结构（可选）
+- `screenshot.png` — 页面截图（用于视觉分析参考，不写入项目目录）
 
 ### 步骤 3：整理视觉规范
 
@@ -64,18 +58,12 @@ node extract-workflow/scripts/web-extract.mjs <URL> --all --scroll --viewport 14
 
 按 `../rules/output-spec.md` 的格式，将提炼结果写入 `src/themes/visual-spec.md`。
 
-### 步骤 4：截图存档（若用户需要）
-
-将参考截图保存到 `src/docs/assets/ref-<domain>.png`，便于后续设计时对照参考。
-
-### 步骤 5：交付总结
+### 步骤 4：交付总结
 
 ```text
 ✅ 提取完成。
 
-已写入以下文件：
-- src/themes/visual-spec.md（视觉规范，后续创建原型时自动引用）
-- src/docs/assets/ref-xxx.png（参考截图，如有）
+已写入 src/themes/visual-spec.md（视觉规范，后续创建原型时自动引用）。
 
 视觉规范已可被 create-workflow 中的原型创建流程引用。
 ```

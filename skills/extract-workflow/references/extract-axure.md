@@ -1,6 +1,6 @@
 # 从 Axure 原型提取资产
 
-从 Axure 原型链接中提取视觉规范、示例数据与项目文档。
+从 Axure 原型链接中提取视觉规范与示例数据。
 
 ## 角色定位
 
@@ -26,8 +26,6 @@ node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --all
 我可以提取以下内容，请告诉我需要哪些：
 1. 视觉规范（配色、字体、间距、组件风格）→ 写入 src/themes/visual-spec.md
 2. 示例数据（页面中的列表字段与示例内容）→ 写入 src/data/
-3. 页面地图（页面层级与用途说明）→ 写入 src/docs/page-map.md
-4. 项目概览（整体介绍与模块摘要）→ 写入 src/docs/project-overview.md
 
 默认全部提取，如只需要其中部分请告知。
 ```
@@ -44,9 +42,9 @@ node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --pages <page1>,<pag
 - `screenshot.png` — 页面截图，用于视觉分析
 - `theme.json` — 设计令牌（配色、字体、间距、圆角）
 
-### 步骤 3：按需提取高级数据
+### 步骤 3：按需提取示例数据
 
-如需提取示例数据或交互说明，追加 `--advanced` 参数：
+如需提取示例数据，追加 `--advanced` 参数：
 
 ```bash
 node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --pages <target> --advanced
@@ -54,7 +52,6 @@ node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --pages <target> --a
 
 额外产出：
 - `content.md` — 页面文本内容，用于识别字段与示例数据
-- `interactions.json` — 交互事件地图
 
 ### 步骤 4：整理并写入产物
 
@@ -69,15 +66,6 @@ node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --pages <target> --a
 - 跨页面合并同类字段，统一命名
 - 每个数据对象输出一个 `src/data/<name>.md`
 
-**页面地图**（若用户需要）：
-- 基于 `sitemap.json` 按层级整理页面结构
-- 每个页面附一句用途说明
-- 输出到 `src/docs/page-map.md`
-
-**项目概览**（若用户需要）：
-- 基于站点地图与页面截图归纳项目定位、模块划分、核心流程
-- 输出到 `src/docs/project-overview.md`
-
 ### 步骤 5：交付总结
 
 提取完成后告知用户：
@@ -87,10 +75,9 @@ node extract-workflow/scripts/axure-extract.mjs <AXURE_URL> --pages <target> --a
 
 已写入以下文件：
 - src/themes/visual-spec.md（视觉规范，后续创建原型时自动引用）
-- src/data/xxx.md（示例数据）
-- src/docs/page-map.md（页面地图）
+- src/data/xxx.md（示例数据，原型创建时按需复用）
 
-如需基于这份原型创建 HTML 原型，可直接使用 create-workflow 技能，视觉规范会自动对齐。
+如需基于这份原型创建 HTML 原型，可直接使用 create-workflow 技能，视觉规范与示例数据会被自动检索复用。
 ```
 
 ## 注意事项

@@ -1,11 +1,11 @@
 ---
 name: extract-workflow
-description: 从 Axure 原型链接、Figma 设计稿（CSS / 网页 / 官方 MCP）或参考网页 URL 中提取视觉规范、示例数据与项目文档，统一输出到项目资产目录供 create-workflow 使用。
+description: 从 Axure 原型链接、Figma 设计稿（CSS / 网页 / 官方 MCP）或参考网页 URL 中提取视觉规范与示例数据，统一输出到项目资产目录供 create-workflow 使用。
 ---
 
 # 资料提取工作流
 
-从外部设计资产中提取并整理项目所需的视觉规范、示例数据与文档资产。
+从外部设计资产中提取并整理项目所需的视觉规范与示例数据。
 
 ## 核心原则
 
@@ -45,9 +45,7 @@ description: 从 Axure 原型链接、Figma 设计稿（CSS / 网页 / 官方 MC
 | 产物类型 | 输出路径 | 被谁使用 |
 | --- | --- | --- |
 | 视觉规范 | `src/themes/visual-spec.md` | `create-workflow` 所有原型 |
-| 示例数据 | `src/data/<name>.md` | `create-workflow` 原型创建 |
-| 页面地图 | `src/docs/page-map.md` | 项目文档参考 |
-| 项目概览 | `src/docs/project-overview.md` | 项目文档参考 |
+| 示例数据 | `src/data/<name>.md` | `create-workflow` 原型创建（按需复用） |
 
 详细格式见 `./rules/output-spec.md`。
 
@@ -57,3 +55,4 @@ description: 从 Axure 原型链接、Figma 设计稿（CSS / 网页 / 官方 MC
 - `./references/extract-figma.md`
 - `./references/extract-web.md`
 - `./rules/output-spec.md`
+
