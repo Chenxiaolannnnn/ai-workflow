@@ -1,6 +1,6 @@
 ---
 name: create-workflow
-description: 当用户要创建 HTML 原型、做页面、做交互演示稿时使用。会按"读规范 → 需求对齐 → 写 spec.md → 产出 HTML"四步流程产出可独立预览的单文件原型。
+description: 当用户要创建 HTML 原型、做页面、做交互演示稿时使用。会按"读规范 → 需求对齐 → 写 spec.md → 产出 HTML"四步流程产出可独立预览的 HTML 原型。
 ---
 
 # 创建原型工作流

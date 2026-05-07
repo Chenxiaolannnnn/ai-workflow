@@ -75,7 +75,7 @@
 ## 🎨 视觉规范
 
 ### 4.1 设计规范来源
-> 优先级详见 `rules/design-guide.md` 的"视觉设计流程"小节
+> 优先级详见 `../rules/design-guide.md` 的"视觉设计流程"小节
 
 **设计规范来源**：`[只写最终采用的一条：用户规范 <path>｜主题 /src/themes/visual-spec.md]`
 
