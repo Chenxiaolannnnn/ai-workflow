@@ -63,6 +63,7 @@
 
 - 根据 spec.md 实现带交互效果的 HTML 原型
 - 所有样式内联或写在同一文件内，确保单文件可独立打开预览
+- 如果原型内容复杂，需分多次实现
 - 交互效果使用原生 JavaScript 实现（点击、展开、切换、表单反馈等）
 - 严格遵循 `src/themes/visual-spec.md` 中的视觉规范，保持与其他原型风格一致
 - 涉及 UI 组件时，按 `rules/component-source.md` 的策略选型与实现
