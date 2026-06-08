@@ -38,40 +38,62 @@ async () => {
 
 ## Step 2：搜索任务单
 
-在 `task.skyunion.net` 页面执行，获取执行人的全部任务后**在 JS 内过滤时间范围**：
+分两次查询，分别以**执行人**和**提交人/派发人**身份搜索，最后去重合并。在 `task.skyunion.net` 页面执行：
 
 ```js
 async () => {
-  // 获取全部任务（不带时间过滤，避免服务端分页丢数据）
-  const fetchPage = async (page) => {
-    const body = `page%5Bpage%5D=${page}&page%5Bpagesize%5D=100&sort=2&handler_id%5B%5D=${USER_ID}`;
-    const resp = await fetch('/v2/api/task/search_new', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      body
-    });
-    const data = await resp.json();
-    return {
-      list: data.data?.list || [],
-      total: data.data?.pagination?.total || 0
+  const USER_ID = 替换为实际ID;
+
+  const fetchByRole = async (roleParam) => {
+    const fetchPage = async (page) => {
+      const body = `page%5Bpage%5D=${page}&page%5Bpagesize%5D=100&sort=2&${roleParam}%5B%5D=${USER_ID}`;
+      const resp = await fetch('/v2/api/task/search_new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body
+      });
+      const data = await resp.json();
+      return {
+        list: data.data?.list || [],
+        total: data.data?.pagination?.total || 0
+      };
     };
+
+    const first = await fetchPage(1);
+    const totalPages = Math.ceil(first.total / 100);
+    const rest = totalPages > 1
+      ? await Promise.all(Array.from({length: totalPages - 1}, (_, i) => fetchPage(i + 2)))
+      : [];
+    return [first.list, ...rest.map(r => r.list)].flat();
   };
 
-  const first = await fetchPage(1);
-  const totalPages = Math.ceil(first.total / 100);
-  const rest = totalPages > 1
-    ? await Promise.all(Array.from({length: totalPages - 1}, (_, i) => fetchPage(i + 2)))
-    : [];
-  const allTasks = [first.list, ...rest.map(r => r.list)].flat();
+  // 作为执行人 handler_id 查一次，作为提交人/派发人 reporter_id 查一次
+  const [asTasks, asReporter] = await Promise.all([
+    fetchByRole('handler_id'),
+    fetchByRole('reporter_id')
+  ]);
+
+  // 去重合并，打上来源标记
+  const seen = new Map();
+  [...asTasks, ...asReporter].forEach(t => {
+    if (!seen.has(t.t_id)) {
+      seen.set(t.t_id, t);
+    } else {
+      // 同时是执行人和派发人，合并角色标记
+      seen.get(t.t_id)._roles = '执行人 + 派发人';
+    }
+  });
+  asTasks.forEach(t => { if (!seen.get(t.t_id)._roles) seen.get(t.t_id)._roles = '执行人'; });
+  asReporter.forEach(t => { if (!seen.get(t.t_id)._roles) seen.get(t.t_id)._roles = '派发人'; });
 
   // 在 JS 内过滤：上周创建 或 上周有更新
   const weekStart = new Date('YYYY-MM-DD').getTime() / 1000; // 替换为实际日期
   const weekEnd   = new Date('YYYY-MM-DD').getTime() / 1000;
 
-  return allTasks
+  return [...seen.values()]
     .filter(t => {
       const created = new Date(t.t_dateline).getTime() / 1000;
       const updated = new Date(t.t_updated_dt).getTime() / 1000;
@@ -85,6 +107,7 @@ async () => {
       status: t.t_status_text,
       handler: t.t_handler_id_text,
       reporter: t.t_reporter_id_text,
+      role: t._roles,         // 本人在该任务中的角色
       created: t.t_dateline,
       updated: t.t_updated_dt,
       expected: t.t_expected_dt
